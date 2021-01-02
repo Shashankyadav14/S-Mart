@@ -1,0 +1,43 @@
+<%- include('_layouts/header'); %>
+<div class="row">
+    <h1 class="page-header"><%= p.title %> </h1>
+    <div class="col-xs-12 col-md-5">
+        <img class="spi" src="/product_images/<%= p.id %>/<%= p.img %> " alt="">
+        <br>
+    </div>
+    <div class="col-xs-12 col-md-7">
+        <p><%= p.desc %> </p>
+        <span>&#36; <%= parseFloat(p.price).toFixed(2) %></span>
+        <% if (loggedIn) { %>
+            <p><a href="/cart/add/<%= p.slug %>">Add to Cart</a></p>
+        <% }else { %>
+            <p>You must be logged in to purchase items.</p>
+        <% } %>
+
+    </div>
+    <div class="col-xs-12">
+        <h3 class="page-header" >Gallery</h3>
+        <ul class="gallery">
+            <% gelleryImage.forEach((image) => { %>
+                <% if (image != 'thumbs') { %>
+                    <li>
+                        <a data-fancybox="gallery" href="/product_images/<%= p.id %>/gallery/<%= image %>">
+                            <img src="/product_images/<%= p.id %>/gallery/thumbs/<%= image %>" alt="">
+                        
+                        </a>
+                    </li>
+                 
+                <% } %>
+             
+            <% }) %>
+        </ul>
+    </div>
+
+
+
+</div>
+
+
+
+<%- include('_layouts/footer'); %>
+

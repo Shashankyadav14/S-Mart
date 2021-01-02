@@ -1,0 +1,30 @@
+.sorting tr:not(.home){
+    cursor: pointer;
+}
+
+.drop-placeholder {
+    border: 1px dashed black;
+    background-color: lightgray;
+}
+    
+#imgPreview{
+    margin: 20px;
+}
+
+.img_preview{
+    width: 50px;
+}
+
+.gallery{
+    list-style: none;
+    border: black solid 1px;
+}
+
+.gallery li {
+    display: inline-block ;
+    margin :5px
+}
+.gallery li img {
+    display: block ;
+    margin :5px
+}

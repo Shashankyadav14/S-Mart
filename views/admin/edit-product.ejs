@@ -1,0 +1,123 @@
+<%- include('../_layouts/adminheader'); %>
+<%- messages('messages', locals) %>
+<% if( typeof(errors) !="undefined"){%>
+<% if(errors){ %>
+<% errors.forEach(eror =>{ %>
+<div class="alert alert-warning" role="alert"><%= eror.msg %>
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<%})}%>
+
+<%}%>
+<h2 class="page-title">Edit a product</h2>
+<a href="/admin/products" class="btn btn-primary">Back to all products</a>
+<br><br>
+
+<form  action="/admin/products/edit-product/<%= id %>" method="POST" enctype="multipart/form-data">
+
+<div class="form-group">
+    <label for="">Title</label>
+    <input type="text" class="form-control" name="title" value="<%= title %>" placeholder="Title">
+</div>
+<div class="form-group">
+    <label for="">Description</label>
+    <textarea name="desc" class="form-control" cols="30" rows="10" placeholder="Description"><%= desc %></textarea>
+</div>
+
+<div class="form-group">
+    <label for="">Category</label>
+    <select name="category" class="form-control">
+        <% categories.forEach(category => { %>
+        <option value="<%= category.slug %>" <% if (selectedCate == category.slug) { %> <%= 'selected' %> <% } %>>
+            <%= category.title %> </option>
+        <% }) %>
+    </select>
+</div>
+
+<div class="form-group">
+    <label for="">Price</label>
+    <input type="text" class="form-control" name="price" value="<%= price %>" placeholder="Price">
+</div>
+
+
+<div class="form-group">
+    <div class="form-group">
+        <label style="display: block;" for="">Current Image</label>
+        <% if (dbImg == '') { %>
+        <img class="img_preview" src="/images/noimage.png">
+        <% }else{ %>
+        <img class="img_preview" src="/product_images/<%= id %>/<%= dbImg %>">
+        <% } %>
+    </div>
+
+    <label for="">Upload Image</label>
+    <input type="file" accept="image/*" name="img" onchange="loadFile(event)">
+    <input hidden name="dbImg" value="<%= dbImg %>">
+    <img src="#" class="img_preview" id="imgPreview">
+    <br>
+    <button class="btn btn-default">Submit</button>
+    <br>
+    <hr>
+</form>
+<div>
+    <h3 class="page-header">Gallery</h3>
+    <ul class="gallery">
+        <% galleryImages.forEach(pic => { %>
+        <% if (pic!='thumbs') { %>
+        <li>
+            <img class="img_preview" src="/product_images/<%= id %>/gallery/thumbs/<%= pic %>">&nbsp;
+            <a href="/admin/products/delete-image/<%= pic %>?id=<%= id %>">Delete</a>
+        </li>
+        <% } %>
+        <% }) %>
+    </ul>
+    <br>
+</div>
+   
+    <form action="/admin/products/product-gallery/<%= id %>" method="POST" enctype="multipart/form-data"
+        class="dropzone" id="dropzoneForm">
+        <div class="fallback">
+            <input name="gallery" type="file" multiple>
+            <button type="submit"></button>
+        </div>
+
+    </form>
+    <br>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.7.1/dropzone.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"></script>
+
+    <script>
+        // previewImage
+        const loadFile = function (event) {
+            const output = document.getElementById('imgPreview');
+            output.src = URL.createObjectURL(event.target.files[0]);
+
+            output.onload = function () {
+                URL.revokeObjectURL(output.src) // free memory
+            }
+        };
+
+        // Dropzone
+        Dropzone.options.dropzoneForm = {
+            acceptedFiles: 'image/*',
+            init: function () {
+                this.on("queuecomplete", function (file) {
+                    setTimeout(() => {
+                        location.reload()
+                    }, 1000)
+                });
+            }
+
+        }
+
+    </script>
+
+</div>
+
+
+<%- include('../_layouts/adminfooter'); %>
