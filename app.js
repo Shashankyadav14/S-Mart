@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 const config = require('./config/db')
 const session = require('cookie-session');
 var passport = require('passport');
-mongoose.connect(config.database, {useNewUrlParser: true , useUnifiedTopology: true} );
+mongoose.connect(config.dbKey, {useNewUrlParser: true , useUnifiedTopology: true} );
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
